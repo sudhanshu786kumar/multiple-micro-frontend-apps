@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
   entry: './src/index.js',
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   devServer: {
     port: 3000,
     static: path.join(__dirname, 'public'),
@@ -32,7 +32,9 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'container',
       remotes: {
-        microfrontend1: 'microfrontend1@http://localhost:3001/remoteEntry.js',
+        microfrontend1: process.env.NODE_ENV === 'production'
+          ? 'microfrontend1@https://your-production-domain.com/microfrontend1/remoteEntry.js'
+          : 'microfrontend1@http://localhost:3001/remoteEntry.js',
       },
       shared: {
         react: { 
@@ -49,9 +51,25 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      minify: process.env.NODE_ENV === 'production',
     }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
+  },
+  optimization: {
+    minimize: process.env.NODE_ENV === 'production',
+    splitChunks: {
+      chunks: 'all',
+      minSize: 20000,
+      maxSize: 244000,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
 };

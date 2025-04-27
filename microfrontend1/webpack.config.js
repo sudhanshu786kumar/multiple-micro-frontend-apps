@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
   entry: './src/index.js',
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   devServer: {
     port: 3001,
     static: path.join(__dirname, 'public'),
@@ -50,9 +50,25 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      minify: process.env.NODE_ENV === 'production',
     }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
+  },
+  optimization: {
+    minimize: process.env.NODE_ENV === 'production',
+    splitChunks: {
+      chunks: 'all',
+      minSize: 20000,
+      maxSize: 244000,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
 };
