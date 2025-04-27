@@ -8,10 +8,17 @@ const App = () => {
   useEffect(() => {
     const loadRemote = async () => {
       try {
+        console.log('Attempting to load remote component...');
         const module = await import('microfrontend1/HelloWorld');
+        console.log('Remote component loaded successfully');
         setHelloWorld(() => module.default);
       } catch (err) {
         console.error('Failed to load remote component:', err);
+        console.error('Error details:', {
+          message: err.message,
+          stack: err.stack,
+          name: err.name
+        });
         setError(err);
       }
     };
@@ -26,7 +33,9 @@ const App = () => {
         <Suspense fallback={<div>Loading...</div>}>
           {error ? (
             <div className="error-message">
-              Failed to load remote component. Please check the console for details.
+              <h2>Failed to load remote component</h2>
+              <p>Error: {error.message}</p>
+              <p>Please check the console for more details.</p>
             </div>
           ) : (
             HelloWorld && <HelloWorld />

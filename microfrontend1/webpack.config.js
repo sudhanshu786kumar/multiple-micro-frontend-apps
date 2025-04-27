@@ -34,6 +34,7 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'microfrontend1',
       filename: 'remoteEntry.js',
+      library: { type: 'var', name: 'microfrontend1' },
       exposes: {
         './HelloWorld': './src/HelloWorld.js',
       },

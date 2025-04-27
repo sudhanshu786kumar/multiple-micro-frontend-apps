@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack serve --mode development --open",
     "build": "cross-env NODE_ENV=production webpack --mode production",
-    "serve:prod": "serve dist -p 3000",
+    "serve:prod": "serve dist -p 3001",
     "build:prod": "npm run build && npm run serve:prod",
     "netlify:build": "npm run build"
   },

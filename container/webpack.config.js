@@ -12,7 +12,7 @@ module.exports = {
   },
   output: {
     publicPath: process.env.NODE_ENV === 'production' 
-      ? 'https://micro-frontend-app1.netlify.app//'
+      ? 'https://micro-frontend-app1.netlify.app/'
       : 'auto',
     clean: true,
   },
