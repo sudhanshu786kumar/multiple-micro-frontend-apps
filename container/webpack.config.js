@@ -33,7 +33,7 @@ module.exports = {
       name: 'container',
       remotes: {
         microfrontend1: process.env.NODE_ENV === 'production'
-          ? 'microfrontend1@https://https://beamish-centaur-0e5486.netlify.app/remoteEntry.js'
+          ? 'microfrontend1@https://beamish-centaur-0e5486.netlify.app/remoteEntry.js'
           : 'microfrontend1@http://localhost:3001/remoteEntry.js',
       },
       shared: {
