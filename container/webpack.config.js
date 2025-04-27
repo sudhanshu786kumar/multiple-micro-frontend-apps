@@ -11,7 +11,9 @@ module.exports = {
     hot: true,
   },
   output: {
-    publicPath: 'auto',
+    publicPath: process.env.NODE_ENV === 'production' 
+      ? 'https://micro-frontend-app1.netlify.app//'
+      : 'auto',
     clean: true,
   },
   module: {

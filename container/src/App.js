@@ -3,12 +3,20 @@ import ErrorBoundary from './ErrorBoundary';
 
 const App = () => {
   const [HelloWorld, setHelloWorld] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Load the remote component after the app is mounted
-    import('microfrontend1/HelloWorld').then(module => {
-      setHelloWorld(() => module.default);
-    });
+    const loadRemote = async () => {
+      try {
+        const module = await import('microfrontend1/HelloWorld');
+        setHelloWorld(() => module.default);
+      } catch (err) {
+        console.error('Failed to load remote component:', err);
+        setError(err);
+      }
+    };
+
+    loadRemote();
   }, []);
 
   return (
@@ -16,7 +24,13 @@ const App = () => {
       <h1>Host Container</h1>
       <ErrorBoundary>
         <Suspense fallback={<div>Loading...</div>}>
-          {HelloWorld && <HelloWorld />}
+          {error ? (
+            <div className="error-message">
+              Failed to load remote component. Please check the console for details.
+            </div>
+          ) : (
+            HelloWorld && <HelloWorld />
+          )}
         </Suspense>
       </ErrorBoundary>
     </div>
